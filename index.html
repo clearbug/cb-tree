@@ -13,7 +13,8 @@
 <body>
     <div class="container" ng-controller="myController">
         <div class="row" style="margin-top: 20px;">
-            <div simple-tree="simpleTree"></div>
+            <!-- <div simple-tree="simpleTree"></div> -->
+            <div multi-tree="multiTree"></div>
         </div>
     </div>
 </body>
@@ -94,7 +95,7 @@
                 haveAllChecked: true,
                 allChecked: false,
                 allCheckedLabel: '全选（英雄联盟）',
-                treeNodes: [],
+                treeNodes: constructTreeNodes($scope.originalTreeNodes, 0, 'lolId', 'lolParentId', 'lolName', 'href'),
                 addNode: function(node){
                     console.log('addNode...');
                     console.dir(node);
@@ -109,10 +110,32 @@
                 }
             };
 
-            $scope.simpleTree.treeNodes = constructTreeNodes($scope.originalTreeNodes, 0, 'lolId', 'lolParentId', 'lolName', 'href');
+            $scope.simpleTree2 = {
+                haveOperationBtn: false,
+                haveCheckBox: true,
+                haveAllChecked: true,
+                allChecked: false,
+                allCheckedLabel: '全选（地被谷）',
+                treeNodes: constructTreeNodes($scope.originalTreeNodes, 0, 'lolId', 'lolParentId', 'lolName', 'href'),
+                addNode: function(node){
+                    console.log('addNode...');
+                    console.dir(node);
+                },
+                editNode: function(node){
+                    console.log('editNode...');
+                    console.dir(node);
+                },
+                deleteNode: function(node){
+                    console.log('deleteNode...');
+                    console.dir(node);
+                }
+            };
 
-            //$scope.multitreeNodes = 
-            //console.log($scope.treeNodes);
+            $scope.multiTree = [];
+            $scope.multiTree.push($scope.simpleTree);
+            $scope.multiTree.push($scope.simpleTree2);
+            $scope.multiTree.push($scope.simpleTree);
+            //console.log($scope.multiTree);
 
             
 

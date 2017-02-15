@@ -49,18 +49,6 @@ angular.module('cbTree', [])
                     node.state.operationBtnDisplay = false;
                 };
 
-                /*$scope.toAddNode = function(originalNode){
-                    $scope.addNode()(originalNode);
-                };
-
-                $scope.toEditNode = function(originalNode){
-                    $scope.editNode()(originalNode);
-                };
-
-                $scope.toDeleteNode = function(originalNode){
-                    $scope.deleteNode()(originalNode);
-                };*/
-
                 function syncAllCheckedModel(){
                     var shouldChecked = true;
                     for(var i = 0; i < $scope.simpleTree.treeNodes.length; i++){
@@ -122,6 +110,19 @@ angular.module('cbTree', [])
                         }
                     });
                 };
+            }
+        };
+    })
+    .directive('multiTree', function(){
+        return {
+            restrict: 'A',
+            templateUrl: 'directives/multiTree.html',
+            replace: true,
+            scope: {
+                multiTree: '=multiTree'
+            },
+            controller: function($scope){
+                
             }
         };
     });

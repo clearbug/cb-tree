@@ -5,10 +5,10 @@ angular.module('cbTree', [])
             templateUrl: 'directives/multiTree.html',
             replace: true,
             scope: {
-                multiTreeData: '=multiTreeData'
+                multiTree: '=multiTree'
             },
             controller: function($scope){
-                
+                console.log($scope.multiTree);
             }
         };
     });
