@@ -10,6 +10,7 @@ angular.module('cbTree', [])
                 haveCheckBox: '=haveCheckBox',
                 haveAllChecked: '=haveAllChecked',
                 allChecked: '=allChecked',
+                allCheckedLabel: '=allCheckedLabel',
                 addNode: '&addNode',
                 editNode: '&editNode',
                 deleteNode: '&deleteNode'

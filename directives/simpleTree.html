@@ -2,7 +2,7 @@
     <p ng-if="haveAllChecked">
         <span class="glyphicon glyphicon-check cursor-pointer-btn" ng-show="allChecked" ng-click="toggleAllChecked()"></span>
         <span class="glyphicon glyphicon-unchecked cursor-pointer-btn" ng-show="!allChecked" ng-click="toggleAllChecked()"></span>
-        <label>全选</label>
+        <label ng-bind="allCheckedLabel"></label>
     </p>
     <ul class="list-group" ng-if="treeData.length > 0">
         <li class="list-group-item" ng-repeat="node in treeData" ng-show="node.state.display" ng-mouseenter="showOperateBtn(node)" ng-mouseleave="hideOperateBtn(node)">
