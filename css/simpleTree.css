@@ -1,0 +1,27 @@
+.cb-tree li:hover {
+    background-color: #f5f5f5;
+}
+.cb-tree .glyphicon-placeholder:before {
+    content: "\0000";
+    opacity: 0;
+}
+.cb-tree .cursor-pointer-btn {
+    cursor: pointer;
+}
+.cb-tree .operation-btn-container {
+    display: inline-block;
+    background-color: #ddd;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.cb-tree .operation-btn-container span {
+    cursor: pointer;
+}
+.cb-tree .content-container {
+    display: inline-block;
+    width: 91%;
+}
+.cb-tree .content-container .badge {
+    float: right;
+}

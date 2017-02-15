@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+    <title>Parse Expression Example</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/simpleTree.css">
+    <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <style type="text/css">
+    </style>
+</head>
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="row" style="margin-top: 20px;">
+            <div simple-tree tree-data="treeData" have-operation-btn="haveOperationBtn" have-check-box="haveCheckBox" all-checked="allChecked" add-node="addNode" edit-node="editNode" delete-node="deleteNode"></div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="directives/simpleTree.js"></script>
+<script type="text/javascript">
+    angular.module('myApp', ['cbTree'])
+        .controller('myController', function($scope, $timeout){
+
+            $scope.originalTreeData1 = [
+                {
+                    id: 1,
+                    lolId: 10001,
+                    lolName: '羽衣甘蓝',
+                    lolParentId: 10002,
+                    href: '/yygl'
+                },
+                {
+                    id: 2,
+                    lolId: 10002,
+                    lolName: '哈同公路',
+                    lolParentId: 0,
+                    href: '#1'
+                },
+                {
+                    id: 3,
+                    lolId: 10003,
+                    lolName: '友好邻邦',
+                    lolParentId: 10004,
+                    href: '/yhlb'
+                },
+                {
+                    id: 4,
+                    lolId: 10005,
+                    lolName: '德艺双馨',
+                    lolParentId: 10004,
+                    href: '/dysx'
+                },
+                {
+                    id: 5,
+                    lolId: 10004,
+                    lolName: '情系故里',
+                    lolParentId: 0,
+                    href: '#2'
+                },
+                {
+                    id: 6,
+                    lolId: 10007,
+                    lolName: '过年了吧',
+                    lolParentId: 10004,
+                    href: '/gnlb'
+                },
+                {
+                    id: 7,
+                    lolId: 10006,
+                    lolName: '就死了吧',
+                    lolParentId: 10004,
+                    href: '/jslb'
+                },
+                {
+                    id: 8,
+                    lolId: 100088,
+                    lolName: '加快肉',
+                    lolParentId: 10006,
+                    href: '/rou'
+                },
+                {
+                    id: 9,
+                    lolId: 100099,
+                    lolName: '加快肉2',
+                    lolParentId: 100088,
+                    href: '/rou2'
+                }
+            ];
+
+            $scope.treeData = transferFlatDataToTreeData($scope.originalTreeData1, 0, 'lolId', 'lolParentId', 'lolName', 'href');
+            //console.log($scope.treeData);
+
+            $scope.haveOperationBtn = false;
+            $scope.haveCheckBox = true;
+            //$scope.allChecked = false;
+
+            $scope.addNode = function(node){
+                console.log('addNode...');
+                console.dir(node);
+            };
+
+            $scope.editNode = function(node){
+                console.log('editNode...');
+                console.dir(node);
+            };
+
+            $scope.deleteNode = function(node){
+                console.log('deleteNode...');
+                console.dir(node);
+            };
+
+            function transferFlatDataToTreeData(originalTreeData, originalFirstLayerParentId, originalIdName, originalParentIdName, originalNameName, originalBadgeName){
+                var treeData = [];
+
+                angular.forEach(originalTreeData, function(originalNode, originalNodeIndex){
+                    if(originalNode[originalParentIdName] === originalFirstLayerParentId){
+                        var node = {
+                            id: originalNodeIndex,
+                            parentId: -9999,
+                            name: originalNode[originalNameName],
+                            badge: originalNode[originalBadgeName],
+                            childNodeIds: [],
+                            state: {
+                                display: true,
+                                expand: true,
+                                checked: false,
+                                operationBtnDisplay: false,
+                                layerNum: 1,
+                                layerArr: []
+                            },
+                            attach: originalNode
+                        };
+                        this.push(node);
+                        completeTreeNode(node, this, originalTreeData, originalIdName, originalParentIdName, originalNameName, originalBadgeName);
+                    }
+                }, treeData);
+
+                angular.forEach(treeData, function(node, nodeIndex){
+                    for(var i = 1; i < node.state.layerNum; i++){
+                        node.state.layerArr.push(i);
+                    }
+                });
+
+                return treeData;
+            }
+
+            function completeTreeNode(node, treeData, originalTreeData, originalIdName, originalParentIdName, originalNameName, originalBadgeName){
+
+                angular.forEach(originalTreeData, function(originalNode, originalNodeIndex){
+                    if(originalNode[originalParentIdName] === node.attach[originalIdName]){
+                        var childNode = {
+                            id: originalNodeIndex,
+                            parentId: node.id,
+                            name: originalNode[originalNameName],
+                            badge: originalNode[originalBadgeName],
+                            childNodeIds: [],
+                            state: {
+                                display: true,
+                                expand: true,
+                                checked: false,
+                                operationBtnDisplay: false,
+                                layerNum: node.state.layerNum + 1,
+                                layerArr: []
+                            },
+                            attach: originalNode
+                        };
+                        node.childNodeIds.push(childNode.id);
+                        this.push(childNode);
+                        completeTreeNode(childNode, treeData, originalTreeData, originalIdName, originalParentIdName, originalNameName, originalBadgeName);
+                    }
+                }, treeData);
+
+            } 
+
+        });
+</script>
+</html>
