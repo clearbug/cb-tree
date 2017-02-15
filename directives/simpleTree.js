@@ -5,30 +5,22 @@ angular.module('cbTree', [])
             templateUrl: 'directives/simpleTree.html',
             replace: true,
             scope: {
-                treeData: '=treeData',
-                haveOperationBtn: '=haveOperationBtn',
-                haveCheckBox: '=haveCheckBox',
-                haveAllChecked: '=haveAllChecked',
-                allChecked: '=allChecked',
-                allCheckedLabel: '=allCheckedLabel',
-                addNode: '&addNode',
-                editNode: '&editNode',
-                deleteNode: '&deleteNode'
+                simpleTree: '=simpleTree'
             },
             controller: function($scope){
                 
-                if($scope.haveOperationBtn){
-                    $scope.contentContainerStyle = {'width': '91%'};
+                if($scope.simpleTree.haveOperationBtn){
+                    $scope.simpleTree.contentContainerStyle = {'width': '91%'};
                 }else{
-                    $scope.contentContainerStyle = {'width': '100%'};
+                    $scope.simpleTree.contentContainerStyle = {'width': '100%'};
                 }
 
                 $scope.toggleExpandState = function(node){
                     node.state.expand = !node.state.expand;
                     angular.forEach(node.childNodeIds, function(childNodeId, childNodeIdIndex){
-                        for(var i = 0; i < $scope.treeData.length; i++){
-                            if(childNodeId === $scope.treeData[i].id){
-                                $scope.treeData[i].state.display = node.state.expand;
+                        for(var i = 0; i < $scope.simpleTree.treeNodes.length; i++){
+                            if(childNodeId === $scope.simpleTree.treeNodes[i].id){
+                                $scope.simpleTree.treeNodes[i].state.display = node.state.expand;
                                 break;
                             }
                         }
@@ -36,9 +28,9 @@ angular.module('cbTree', [])
                 };
 
                 $scope.toggleAllChecked = function(){
-                    $scope.allChecked = !$scope.allChecked;
-                    angular.forEach($scope.treeData, function(node, nodeIndex){
-                        node.state.checked = $scope.allChecked;
+                    $scope.simpleTree.allChecked = !$scope.simpleTree.allChecked;
+                    angular.forEach($scope.simpleTree.treeNodes, function(node, nodeIndex){
+                        node.state.checked = $scope.simpleTree.allChecked;
                     });
                 };
 
@@ -57,7 +49,7 @@ angular.module('cbTree', [])
                     node.state.operationBtnDisplay = false;
                 };
 
-                $scope.toAddNode = function(originalNode){
+                /*$scope.toAddNode = function(originalNode){
                     $scope.addNode()(originalNode);
                 };
 
@@ -67,20 +59,20 @@ angular.module('cbTree', [])
 
                 $scope.toDeleteNode = function(originalNode){
                     $scope.deleteNode()(originalNode);
-                };
+                };*/
 
-                syncAllCheckedModel = function(){
+                function syncAllCheckedModel(){
                     var shouldChecked = true;
-                    for(var i = 0; i < $scope.treeData.length; i++){
-                        if(!$scope.treeData[i].state.checked){
+                    for(var i = 0; i < $scope.simpleTree.treeNodes.length; i++){
+                        if(!$scope.simpleTree.treeNodes[i].state.checked){
                             shouldChecked = false;
                             break;
                         }
                     }
-                    $scope.allChecked = shouldChecked;
+                    $scope.simpleTree.allChecked = shouldChecked;
                 }
 
-                syncParentNodeCheckedState = function(node){
+                function syncParentNodeCheckedState(node){
                     var parentNode;
 
                     if(node.parentId === -9999){
@@ -88,21 +80,21 @@ angular.module('cbTree', [])
                     }
 
                     if(node.state.checked){
-                        for(var i = 0; i < $scope.treeData.length; i++){
-                            if ($scope.treeData[i].id === node.parentId) {
-                                parentNode = $scope.treeData[i];
+                        for(var i = 0; i < $scope.simpleTree.treeNodes.length; i++){
+                            if ($scope.simpleTree.treeNodes[i].id === node.parentId) {
+                                parentNode = $scope.simpleTree.treeNodes[i];
                                 parentNode.state.checked = true;
                                 break;
                             }
                         }
                     }else{
-                        for(var i = 0; i < $scope.treeData.length; i++){
-                            if ($scope.treeData[i].id === node.parentId) {
-                                parentNode = $scope.treeData[i];
+                        for(var i = 0; i < $scope.simpleTree.treeNodes.length; i++){
+                            if ($scope.simpleTree.treeNodes[i].id === node.parentId) {
+                                parentNode = $scope.simpleTree.treeNodes[i];
                                 var shouldChecked = false;
                                 for(var j = 0; j < parentNode.childNodeIds.length; j++){
-                                    for(var k = 0; k < $scope.treeData.length; k++){
-                                        if($scope.treeData[k].id === parentNode.childNodeIds[j] && $scope.treeData[k].state.checked){
+                                    for(var k = 0; k < $scope.simpleTree.treeNodes.length; k++){
+                                        if($scope.simpleTree.treeNodes[k].id === parentNode.childNodeIds[j] && $scope.simpleTree.treeNodes[k].state.checked){
                                             shouldChecked = true;
                                             break;
                                         }
@@ -117,14 +109,14 @@ angular.module('cbTree', [])
                         }
                     }
                     syncParentNodeCheckedState(parentNode);
-                };
+                }
 
-                syncChildNodesCheckedState = function(node){
+                function syncChildNodesCheckedState(node){
                     angular.forEach(node.childNodeIds, function(childNodeId, childNodeIdIndex){
-                        for(var i = 0; i < $scope.treeData.length; i++){
-                            if(childNodeId === $scope.treeData[i].id){
-                                $scope.treeData[i].state.checked = node.state.checked;
-                                syncChildNodesCheckedState($scope.treeData[i]);
+                        for(var i = 0; i < $scope.simpleTree.treeNodes.length; i++){
+                            if(childNodeId === $scope.simpleTree.treeNodes[i].id){
+                                $scope.simpleTree.treeNodes[i].state.checked = node.state.checked;
+                                syncChildNodesCheckedState($scope.simpleTree.treeNodes[i]);
                                 break;
                             }
                         }

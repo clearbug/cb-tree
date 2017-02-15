@@ -13,7 +13,7 @@
 <body>
     <div class="container" ng-controller="myController">
         <div class="row" style="margin-top: 20px;">
-            <div simple-tree tree-data="treeData" have-operation-btn="haveOperationBtn" have-check-box="haveCheckBox" have-all-checked="haveAllChecked" all-checked="allChecked" all-checked-label="allCheckedLabel" add-node="addNode" edit-node="editNode" delete-node="deleteNode"></div>
+            <div simple-tree="simpleTree"></div>
         </div>
     </div>
 </body>
@@ -22,7 +22,7 @@
     angular.module('myApp', ['cbTree'])
         .controller('myController', function($scope, $timeout){
 
-            $scope.originalTreeData1 = [
+            $scope.originalTreeNodes = [
                 {
                     id: 1,
                     lolId: 10001,
@@ -88,34 +88,38 @@
                 }
             ];
 
-            $scope.treeData = transferFlatDataToTreeData($scope.originalTreeData1, 0, 'lolId', 'lolParentId', 'lolName', 'href');
-            //console.log($scope.treeData);
-
-            $scope.haveOperationBtn = false;
-            $scope.haveCheckBox = true;
-            $scope.allChecked = false;
-            $scope.haveAllChecked = true;
-            $scope.allCheckedLabel = "全选（英雄联盟）";
-
-            $scope.addNode = function(node){
-                console.log('addNode...');
-                console.dir(node);
+            $scope.simpleTree = {
+                haveOperationBtn: false,
+                haveCheckBox: true,
+                haveAllChecked: true,
+                allChecked: false,
+                allCheckedLabel: '全选（英雄联盟）',
+                treeNodes: [],
+                addNode: function(node){
+                    console.log('addNode...');
+                    console.dir(node);
+                },
+                editNode: function(node){
+                    console.log('editNode...');
+                    console.dir(node);
+                },
+                deleteNode: function(node){
+                    console.log('deleteNode...');
+                    console.dir(node);
+                }
             };
 
-            $scope.editNode = function(node){
-                console.log('editNode...');
-                console.dir(node);
-            };
+            $scope.simpleTree.treeNodes = constructTreeNodes($scope.originalTreeNodes, 0, 'lolId', 'lolParentId', 'lolName', 'href');
 
-            $scope.deleteNode = function(node){
-                console.log('deleteNode...');
-                console.dir(node);
-            };
+            //$scope.multitreeNodes = 
+            //console.log($scope.treeNodes);
 
-            function transferFlatDataToTreeData(originalTreeData, originalFirstLayerParentId, originalIdName, originalParentIdName, originalNameName, originalBadgeName){
-                var treeData = [];
+            
 
-                angular.forEach(originalTreeData, function(originalNode, originalNodeIndex){
+            function constructTreeNodes(originalTreeNodes, originalFirstLayerParentId, originalIdName, originalParentIdName, originalNameName, originalBadgeName){
+                var treeNodes = [];
+
+                angular.forEach(originalTreeNodes, function(originalNode, originalNodeIndex){
                     if(originalNode[originalParentIdName] === originalFirstLayerParentId){
                         var node = {
                             id: originalNodeIndex,
@@ -134,22 +138,21 @@
                             attach: originalNode
                         };
                         this.push(node);
-                        completeTreeNode(node, this, originalTreeData, originalIdName, originalParentIdName, originalNameName, originalBadgeName);
+                        completeTreeNode(node, this, originalTreeNodes, originalIdName, originalParentIdName, originalNameName, originalBadgeName);
                     }
-                }, treeData);
+                }, treeNodes);
 
-                angular.forEach(treeData, function(node, nodeIndex){
+                angular.forEach(treeNodes, function(node, nodeIndex){
                     for(var i = 1; i < node.state.layerNum; i++){
                         node.state.layerArr.push(i);
                     }
                 });
 
-                return treeData;
+                return treeNodes;
             }
 
-            function completeTreeNode(node, treeData, originalTreeData, originalIdName, originalParentIdName, originalNameName, originalBadgeName){
-
-                angular.forEach(originalTreeData, function(originalNode, originalNodeIndex){
+            function completeTreeNode(node, treeNodes, originalTreeNodes, originalIdName, originalParentIdName, originalNameName, originalBadgeName){
+                angular.forEach(originalTreeNodes, function(originalNode, originalNodeIndex){
                     if(originalNode[originalParentIdName] === node.attach[originalIdName]){
                         var childNode = {
                             id: originalNodeIndex,
@@ -169,10 +172,9 @@
                         };
                         node.childNodeIds.push(childNode.id);
                         this.push(childNode);
-                        completeTreeNode(childNode, treeData, originalTreeData, originalIdName, originalParentIdName, originalNameName, originalBadgeName);
+                        completeTreeNode(childNode, treeNodes, originalTreeNodes, originalIdName, originalParentIdName, originalNameName, originalBadgeName);
                     }
-                }, treeData);
-
+                }, treeNodes);
             } 
 
         });
