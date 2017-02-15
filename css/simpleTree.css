@@ -25,3 +25,6 @@
 .cb-tree .content-container .badge {
     float: right;
 }
+.cb-tree p {
+    margin: 0;
+}

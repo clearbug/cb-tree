@@ -13,7 +13,7 @@
 <body>
     <div class="container" ng-controller="myController">
         <div class="row" style="margin-top: 20px;">
-            <div simple-tree tree-data="treeData" have-operation-btn="haveOperationBtn" have-check-box="haveCheckBox" all-checked="allChecked" add-node="addNode" edit-node="editNode" delete-node="deleteNode"></div>
+            <div simple-tree tree-data="treeData" have-operation-btn="haveOperationBtn" have-check-box="haveCheckBox" have-all-checked="haveAllChecked" all-checked="allChecked" add-node="addNode" edit-node="editNode" delete-node="deleteNode"></div>
         </div>
     </div>
 </body>
@@ -93,7 +93,8 @@
 
             $scope.haveOperationBtn = false;
             $scope.haveCheckBox = true;
-            //$scope.allChecked = false;
+            $scope.allChecked = false;
+            $scope.haveAllChecked = true;
 
             $scope.addNode = function(node){
                 console.log('addNode...');

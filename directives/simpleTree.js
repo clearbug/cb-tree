@@ -8,6 +8,7 @@ angular.module('cbTree', [])
                 treeData: '=treeData',
                 haveOperationBtn: '=haveOperationBtn',
                 haveCheckBox: '=haveCheckBox',
+                haveAllChecked: '=haveAllChecked',
                 allChecked: '=allChecked',
                 addNode: '&addNode',
                 editNode: '&editNode',
@@ -30,6 +31,13 @@ angular.module('cbTree', [])
                                 break;
                             }
                         }
+                    });
+                };
+
+                $scope.toggleAllChecked = function(){
+                    $scope.allChecked = !$scope.allChecked;
+                    angular.forEach($scope.treeData, function(node, nodeIndex){
+                        node.state.checked = $scope.allChecked;
                     });
                 };
 
