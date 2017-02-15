@@ -1,21 +1,19 @@
-<div class="cb-tree">
-    <ul class="list-group">
-        <li class="list-group-item" ng-repeat="node in treeData" ng-show="node.state.display" ng-mouseenter="showOperateBtn(node)" ng-mouseleave="hideOperateBtn(node)">
-            <div class="content-container" ng-style="contentContainerStyle">
-                <span class="badge">{{ node.badge }}</span>
-                <span class="glyphicon glyphicon-placeholder" ng-repeat="item in node.state.layerArr"></span>
-                <span class="glyphicon glyphicon-chevron-down cursor-pointer-btn" ng-if="node.childNodeIds.length > 0" ng-show="node.state.expand" ng-click="toggleExpandState(node)"></span>
-                <span class="glyphicon glyphicon-chevron-right cursor-pointer-btn" ng-if="node.childNodeIds.length > 0" ng-show="!node.state.expand" ng-click="toggleExpandState(node)"></span>
-                <span class="glyphicon glyphicon-placeholder" ng-if="node.childNodeIds.length === 0"></span>
-                <span class="glyphicon glyphicon-check cursor-pointer-btn" ng-if="haveCheckBox" ng-show="node.state.checked" ng-click="toggleCheckedState(node)"></span>
-                <span class="glyphicon glyphicon-unchecked cursor-pointer-btn" ng-if="haveCheckBox" ng-show="!node.state.checked" ng-click="toggleCheckedState(node)"></span>
-                {{ node.name }}
-            </div>
-            <div class="operation-btn-container" ng-if="haveOperationBtn" ng-show="node.state.operationBtnDisplay">
-                <span class="glyphicon glyphicon-plus" ng-click="toAddNode(node.attach)"></span>
-                <span class="glyphicon glyphicon-pencil" ng-click="toEditNode(node.attach)"></span>
-                <span class="glyphicon glyphicon-remove" ng-click="toDeleteNode(node.attach)"></span>
-            </div>
-        </li>
-    </ul>
-</div>
+<ul class="list-group cb-tree" ng-show="treeData.length > 0">
+    <li class="list-group-item" ng-repeat="node in treeData" ng-show="node.state.display" ng-mouseenter="showOperateBtn(node)" ng-mouseleave="hideOperateBtn(node)">
+        <div class="content-container" ng-style="contentContainerStyle">
+            <span class="badge">{{ node.badge }}</span>
+            <span class="glyphicon glyphicon-placeholder" ng-repeat="item in node.state.layerArr"></span>
+            <span class="glyphicon glyphicon-chevron-down cursor-pointer-btn" ng-if="node.childNodeIds.length > 0" ng-show="node.state.expand" ng-click="toggleExpandState(node)"></span>
+            <span class="glyphicon glyphicon-chevron-right cursor-pointer-btn" ng-if="node.childNodeIds.length > 0" ng-show="!node.state.expand" ng-click="toggleExpandState(node)"></span>
+            <span class="glyphicon glyphicon-placeholder" ng-if="node.childNodeIds.length === 0"></span>
+            <span class="glyphicon glyphicon-check cursor-pointer-btn" ng-if="haveCheckBox" ng-show="node.state.checked" ng-click="toggleCheckedState(node)"></span>
+            <span class="glyphicon glyphicon-unchecked cursor-pointer-btn" ng-if="haveCheckBox" ng-show="!node.state.checked" ng-click="toggleCheckedState(node)"></span>
+            {{ node.name }}
+        </div>
+        <div class="operation-btn-container" ng-if="haveOperationBtn" ng-show="node.state.operationBtnDisplay">
+            <span class="glyphicon glyphicon-plus" ng-click="toAddNode(node.attach)"></span>
+            <span class="glyphicon glyphicon-pencil" ng-click="toEditNode(node.attach)"></span>
+            <span class="glyphicon glyphicon-remove" ng-click="toDeleteNode(node.attach)"></span>
+        </div>
+    </li>
+</ul>
