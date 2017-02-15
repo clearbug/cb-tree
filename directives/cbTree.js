@@ -116,7 +116,7 @@ angular.module('cbTree', [])
     .directive('multiTree', function(){
         return {
             restrict: 'A',
-            templateUrl: 'directives/multiTree.html',
+            template: '<div ng-repeat="simpleTree in multiTree track by $index" simple-tree="simpleTree"></div>',
             replace: true,
             scope: {
                 multiTree: '=multiTree'
